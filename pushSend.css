@@ -1,0 +1,125 @@
+body{
+    background-color: #DFE8F6;
+}
+
+.control-label{
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: right;
+}
+
+#ActivityPicImg{
+    width: 100px;
+    height: 100px;
+    border: 1px solid;
+}
+
+.radio-inline, .checkbox-inline {
+    padding-top: 7px;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: normal;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.pushObjectDiv {
+    margin: 0 0 10px 0px;
+}
+
+.modal-dialog {
+    width: 820px;
+}
+
+/* ��ҳ��� */
+.pagination {
+    margin:0px;
+}
+
+.search-option {
+    padding-top: 10px;
+}
+
+#UserName {
+    width: 65%;
+    display: inline;
+}
+.input-group-btn ul {
+    width: 70px;
+    min-width: 70px;
+}
+#BeginDate, #EndDate {
+    width: 150px;
+    display: inline;
+}
+
+.search-btn {
+    margin-right: 40px;
+}
+
+#ActivityPaging, #PicPaging {
+    float: left;
+    margin-left: 10%;
+}
+#ActivityBtns, #PicBtns {
+    float: left;
+    /* width: 30%; */
+    width: 200px;
+    margin-top: 2px;
+}
+
+/* ��б���ʾ���� */
+#ActivityContainer {
+    /*border: 1px solid blue;*/
+    clear: both;
+    min-height: 400px;
+}
+.singleActivityDiv {
+    cursor: pointer;
+    border: 1px solid red;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.span-inline {
+    display: inline-block;
+    width: 102px;
+}
+.single-img {
+    width: 180px;
+    height: 180px;
+    display: block;
+}
+.activity-title {
+    display: block;
+}
+.pic-date {
+    display: block;
+}
+.pic-mask {
+    display: none;
+    position: absolute;
+    background: #000;
+    background-image: url(../images/selected.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 180px;
+    height: 180px;
+    top: 0px;
+    left: 0px;
+    opacity: .6;                    /* IE9 + etc...modern browsers */
+    -webkit-opacity: 0.6;           /* older safari/Chrome browsers */
+    -moz-opacity: 0.6;              /* Netscape and Older than Firefox 0.9 */
+    -khtml-opacity: 0.6;            /* Safari 1.x (pre WebKit!) ��ʽkhtml�ں˵�Safari�����*/
+    filter:alpha(opacity=50);       /* IE 4-9 */
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";   /*This works in IE 8 & 9 too*/
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);         /*IE4-IE9*/
+}
+.commment-count {
+    position:absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #fff;
+}

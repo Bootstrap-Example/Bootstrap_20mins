@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>发送通知</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="pushSend.css"/>
+
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.bootpag.js"></script>
+    <script src="pushSend.js"></script>
+</head>
+<body>
+<!-- 遮罩层模态框 -->
+<div id="MaskModal" tabindex="-1">
+    <span id="LoadingTip">正在进行操作, 请稍后...</span>
+    <!-- <button id="CloseBtn" type="button" onclick="javascript: $('#MaskModal').hide();">关闭按钮</button> -->
+    <img src="/assets/images/loading1.gif" alt="请等待...">
+</div>
+
+<!-- 选择推广活动Modal -->
+<div class="modal fade" id="SelectActivityModal" tabindex="-1" role="dialog" aria-labelledby="SelectActivityLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="SelectActivityLabel">
+                    选择推广活动窗口
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="ActivityContainer">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- 底部的分页/确认按钮 -->
+                <div id="ActivityPaging">
+                </div>
+
+                <div id="ActivityBtns">
+                    <button class="btn btn-primary" onclick="confirmActivity()">选择活动</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 选择推广图片Modal -->
+<div class="modal fade" id="SelectPicModal" tabindex="-1" role="dialog" aria-labelledby="SelectPicLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="SelectPicLabel">
+                    选择推广图片窗口
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="PicSearchDiv">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4 col-md-4">
+                            <label for="UserName">用户昵称: </label>
+                            <input type="text" class="form-control" id="UserName" placeholder="输入用户昵称"/>
+                        </div>
+                        <div class="col-xs-8 col-sm-8 col-md-8">
+                            <label for="BeginDate">发布日期: </label>
+                            <input type="date" class="form-control" id="BeginDate"/>
+                            <label for="EndDate">--</label>
+                            <input type="date" class="form-control" id="EndDate" placeholder="至今"/>
+                        </div>
+                    </div>
+
+                    <div class="row search-option">
+                        <div class="col-xs-4 col-sm-4 col-md-4" style="padding-top:10px;">
+                            <label for="SortMode">排序方式: </label>
+                            <select id="SortMode" name="order-mode">
+                                <option value="1">时间顺序</option>
+                                <option value="2">评论数量</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="Recommend" value="0">只含推荐内容</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3">
+                            <button class="btn btn-primary btn-sm" onclick="searchPics()">搜索图片</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div id="PicViewContainer">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- 底部的分页/确认按钮 -->
+                <div id="PicPaging">
+                </div>
+
+                <div id="PicBtns">
+                    <button class="btn btn-primary btn-sm" onclick="recommendUserPics()">推荐</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <label class="col-sm-2 control-label" for="Notification">推送内容: </label>
+
+        <div class="col-sm-7">
+            <textarea class="form-control" id="Notification" rows="4" placeholder="请在此输入推送内容"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-2 control-label">推送类型: </label>
+
+        <div class="col-sm-10">
+            <div id="PushTypeDiv">
+                <label class="checkbox-inline">
+                    <input type="radio" id="TypeAction" name="sendType" value="0" checked/> 活动
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" id="TypePic" name="sendType" value="1"/> 图片
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" id="TypeText" name="sendType" value="2"/> 纯文本
+                </label>
+
+                <div>
+                    <input type="text" class="form-control" id="ActivityPicId" placeholder="请输入活动ID" style="width: 50%; display: inline-block"/>
+                    <button class="btn btn-primary" id="SelectActionBtn" onclick="showSelectActivityModal()">选择活动</button>
+                    <button class="btn btn-primary" id="SelectPicBtn" onclick="showSelectPicModal()" style="display: none;">选择图片</button>
+                    <img src="" alt="" id="ActivityPicImg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 control-label" for="AllAudience">推送对象: </label>
+        <div class="col-sm-10">
+            <div  id="PushAudienceDiv">
+                <label class="checkbox-inline">
+                    <input type="radio" name="pushAudience" id="AllAudience" value="0" checked> 广播(所有人)
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="pushAudience" id="SinglePerson" value="1"> 个人(测试)
+                </label>
+            </div>
+            <div>
+                <input type="text" class="form-control" id="UserUuid" value="" placeholder="请输入推送用户ID" disabled style="width: 50%;"/>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <div class="row">
+        <label class="col-sm-2 control-label">推送时间: </label>
+
+        <div class="col-sm-2">
+            <label class="checkbox-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios6" value="option1" checked> 立即
+            </label>
+            <label class="checkbox-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios7" value="option2"> 定时
+            </label>
+        </div>
+        <div class="col-sm-3">
+            <input type="date" class="form-control" id="Pushtime" disabled/>
+        </div>
+    </div>
+
+    <hr/>
+    <button class="btn btn-primary col-sm-offset-2" onclick="sendPush()">确认发送</button>
+</div>
+</body>
+</html>
